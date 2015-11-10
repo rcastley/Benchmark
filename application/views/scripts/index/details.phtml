@@ -1,0 +1,32 @@
+<div class="jumbotron jcolor">
+      <div class="container">
+          <h2>Benchmark Summary</h2>
+        <p><?php echo $this->chartName ?> (<?php echo $this->cid ?>) - last updated: <?php echo $this->modified ?></p>
+      </div>
+</div>
+<div class="container">
+<table class="table table-striped table-hover table-condensed">
+    <tr>
+        <th>Name</th>
+        <th>DNS</th>
+        <th>Wait</th>
+        <th>Load</th>
+        <th>Doc</th>
+        <th>Webpage</th>
+        <th>Bytes (Mb)</th>
+        <th>Items</th>
+    </tr>
+    <?php foreach ($this->data as $d) : ?>
+        <tr>
+            <td><?php echo $d->name ?></td>
+            <td><?php echo $d->dns ?> s</td>
+            <td><?php echo $d->wait ?> s</td>
+            <td><?php echo $d->load ?> s</td>
+            <td><?php echo $d->doc_complete ?> s</td>
+            <td><?php echo $d->webpage_response ?> s</td>
+            <td><?php echo $d->bytes ?> Mb</td>
+            <td><?php echo $d->items ?></td>
+        </tr>
+<?php endforeach; ?>
+</table>
+</div>

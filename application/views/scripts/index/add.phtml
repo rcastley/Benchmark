@@ -1,0 +1,17 @@
+<div class="jumbotron jcolor">
+      <div class="container">
+          <h1>Add Benchmark</h1>
+        <p>Enter the benchmark favorite chart ID. To refresh the benchmark data use the refresh option.</p>
+      </div>
+</div>
+<div class="container">
+<form role="form" action="/index/create" method="POST">
+  <div class="form-group">
+    <label >Favorite Chart ID</label>
+    <input type="text" class="form-control" id="cid" name="cid" placeholder="Chart ID">
+    <label >Favorite Chart Name</label>
+    <input type="text" class="form-control" id="name" name="name" placeholder="Chart Name">
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+</div>

@@ -1,0 +1,10 @@
+<table border=1>
+<?php foreach ($this->testData as $d) {
+echo "<tr><td>" . $d['name'] . $d['id'] . "</td>";
+foreach ($d['metrics'] as $v) {
+  echo "<td>" . $v . "</td>";
+}
+echo "</tr>";
+} ?>
+
+</table>

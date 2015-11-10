@@ -1,0 +1,27 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+  -webkit-print-color-adjust: exact;
+}
+
+.jumbotron h2 {
+    color: #0c6cb3 !important;
+}
+
+@media print {
+    .data {
+    page-break-after: always;
+  }
+}
+
+@page {
+    margin: 0% 5%; size: landscape;
+}
+
+.footer {
+  margin-top: 40px;
+}

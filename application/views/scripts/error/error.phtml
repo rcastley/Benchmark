@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="images/favicon.ico">
+<title>Site Condition Creator - Catchpoint</title>
+</head>
+<body>
+	<h2>An error occurred</h2>
+	<h3><?php echo $this->message ?></h3>
+
+  <?php if (isset($this->exception)): ?>
+
+  <h4>Exception information:</h4>
+	<p>
+		<b>Message:</b> <?php echo $this->exception->getMessage()?>
+  </p>
+
+	<h3>Stack trace:</h3>
+	<pre><?php echo $this->exception->getTraceAsString()?>
+  </pre>
+
+	<h3>Request Parameters:</h3>
+	<pre><?php echo var_export($this->request->getParams(), true)?>
+  </pre>
+  <?php endif ?>
+
+</body>
+</html>

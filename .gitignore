@@ -1,0 +1,9 @@
+/library/Zend/
+.settings/
+.DS_Store
+.buildpath
+.project
+.zfproject.xml
+*.db
+
+data/db/benchmark.db

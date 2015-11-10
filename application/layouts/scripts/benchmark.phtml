@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="/images/favicon.ico">
+
+<title>Benchmark Creator - Catchpoint</title>
+
+<!-- Bootstrap core CSS -->
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+<link href="/css/bootstrap-theme.min.css" rel="stylesheet">
+<link href="/css/benchmark.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<!--
+<link href="/css/dashboard.css" rel="stylesheet">
+-->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+</head>
+<body role="document">
+<!-- Fixed navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a href="/"><img class="img-responsive" src="/images/cp_white.png"></a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<?php if ($this->user == "benchmark") : ?>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-book"></span> Benchmarks <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<?php foreach ($this->current as $c) : ?>
+							<li><a href="/index/details/cid/<?php echo $c->cid ?>"><span class="glyphicon glyphicon-stats"></span> <?php echo $c->name; ?> (<?php echo $c->cid ?>)</li>
+						<?php endforeach ?>
+						<li role="separator" class="divider"></li>
+						<li><a href="/index/add"><span class="glyphicon glyphicon-plus"></span> Add New Benchmark</a></li>
+						<li><a href="/index/update"><span class="glyphicon glyphicon-refresh"></span> Update All Benchmarks</a></li>
+					</ul>
+				</li>
+				<?php endif; ?>
+				<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>  <?php echo $this->user ?> <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="#" data-toggle="modal" data-target="#myModal"><span
+						class="glyphicon glyphicon-cog"></span>  Settings</a></li>
+						<li class="divider"></li>
+						<li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>  Logout</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div><!--/.nav-collapse -->
+	</div>
+</nav>
+	<?php echo $this->layout()->content?>
+
+	<?php echo $this->render('_modal.phtml') ?>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+</body>
+</html>
