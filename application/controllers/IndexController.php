@@ -6,47 +6,50 @@ class IndexController extends Zend_Controller_Action
 
     public function preDispatch()
     {
-        if (!Zend_Auth::getInstance()->hasIdentity()) {
-            // If the user is logged in, we don't want to show the login form;
-            // however, the logout action should still be available
-            $this->_helper->redirector('index', 'login');
-        }
     }
 
     public function init()
     {
-        date_default_timezone_set('UTC');
-        $this->_user = Zend_Auth::getInstance()->getIdentity();
-        $this->view->user = $this->_user;
+        if (!Zend_Auth::getInstance()->hasIdentity()) {
+            // If the user is logged in, we don't want to show the login form;
+          // however, the logout action should still be available
+          $this->_helper->redirector('index', 'login');
+        }
 
         $this->_helper->layout->setLayout('benchmark');
+
+        date_default_timezone_set('UTC');
+
+        $this->_user = Zend_Auth::getInstance()->getIdentity();
+        $this->view->user = $this->_user;
 
         $charts = new Application_Model_BenchmarkChartsMapper();
 
         $result = $charts->fetchAll();
-
         $this->view->current = $result;
+
+        $user = new Application_Model_UsersMapper();
+
+        $userData = $user->fetchAll($this->_user);
+
+        if (!$userData['cid'] | $userData['cid'] == null) {
+            throw new Exception('No Favorite Chart ID found! Please go to your settings and enter one.');
+        }
+
+        $this->view->key = $userData['key'];
+        $this->view->secret = $userData['secret'];
+        $this->view->cid = $userData['cid'];
     }
 
     public function indexAction()
     {
-        if (Zend_Auth::getInstance()->hasIdentity()) {
-            $user = Zend_Auth::getInstance()->getIdentity();
-        } else {
-            $user = $this->_getParam('owner');
-        }
+        $t = new Catchpoint_Pull();
+        $t->override = true;
+        $t->key = $this->view->key;//$result['key'];
+        $t->secret = $this->view->secret;//$result['secret'];
+        $testArray = $t->fetchData('tests?typeId=0&monitorId=18&status=0');
 
-        $site = new Application_Model_UsersMapper();
-
-        $result = $site->fetchAll($user);
-
-        if (!$result['cid'] | $result['cid'] == null) {
-            throw new Exception('No Favorite Chart ID found. Please go to settings and enter one.');
-        }
-
-        $this->view->key = $result['key'];
-        $this->view->secret = $result['secret'];
-        $this->view->cid = $result['cid'];
+        $this->view->tests = $testArray;
     }
 
     public function createAction()
@@ -205,7 +208,7 @@ class IndexController extends Zend_Controller_Action
 
     public function updateAction()
     {
-      echo "<pre>";
+        echo '<pre>';
         //$this->session = new Zend_Session_Namespace('Catchpoint');
         //unset($this->session->token);
         $t = new Catchpoint_Pull();
@@ -253,7 +256,7 @@ class IndexController extends Zend_Controller_Action
 
         foreach ($tests as $t) {
             $name = preg_replace('/[^A-Za-z0-9\-]/', '', $t['name']);
-            echo 'Updating '.$name . "<br>";
+            echo 'Updating '.$name.'<br>';
             $data = new Application_Model_BenchmarkData(
                 array(
                     'cid' => $t['id'],
