@@ -23,10 +23,11 @@ class Application_Form_Login extends Zend_Form
                                 'StringTrim',
                         ),
                         'required' => true,
+                        'autocomplete' => 'off',
                         'placeholder' => 'Username',
                         'class' => 'form-control',
                 ));
-
+                
         $login = $this->addElement('button', 'login',
                 array(
                         'required' => false,
