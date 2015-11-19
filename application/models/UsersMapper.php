@@ -37,6 +37,7 @@ class Application_Model_UsersMapper
 
     public function save(Application_Model_Users $user)
     {
+        /*
         $data = array(
                 'user' => $user->getUser(),
         );
@@ -45,6 +46,15 @@ class Application_Model_UsersMapper
                 array(
                   'user = ?' => $user->getUser(),
                 ));
+        */
+        $data = array(
+          'user' => $user->getUser(),
+          'key' => base64_encode($user->getKey()),
+          'secret' => base64_encode($user->getSecret()),
+          'cid' => $user->getCid(),
+        );
+
+        $this->getDbTable()->update($data, array('user = ?' => $user->getUser()));
     }
 
     public function settings(Application_Model_Users $user)
