@@ -134,14 +134,14 @@ class IndexController extends Zend_Controller_Action
         foreach ($myArray as $m) {
             foreach ($m->summary->items as $a) {
                 $tests[] = array(
-              'name' => $a->breakdown_1->name,
-              'dns' => round($a->synthetic_metrics[0] / 1000, 3),
-              'wait' => round($a->synthetic_metrics[1] / 1000, 3),
-              'load' => round($a->synthetic_metrics[2] / 1000, 3),
-              'bytes' => round($a->synthetic_metrics[3] / 1000000, 2),
-              'doc_complete' => round($a->synthetic_metrics[4] / 1000, 2),
-              'webpage_response' => round($a->synthetic_metrics[5] / 1000, 2),
-              'items' => round($a->synthetic_metrics[6], 0), );
+                  'name' => $a->breakdown_1->name,
+                  'dns' => round($a->synthetic_metrics[0] / 1000, 3),
+                  'wait' => round($a->synthetic_metrics[1] / 1000, 3),
+                  'load' => round($a->synthetic_metrics[2] / 1000, 3),
+                  'bytes' => round($a->synthetic_metrics[3] / 1000000, 2),
+                  'doc_complete' => round($a->synthetic_metrics[4] / 1000, 2),
+                  'webpage_response' => round($a->synthetic_metrics[5] / 1000, 2),
+                  'items' => round($a->synthetic_metrics[6], 0), );
             }
         }
 
@@ -255,7 +255,7 @@ class IndexController extends Zend_Controller_Action
         }
 
         foreach ($tests as $t) {
-            $name = preg_replace('/[^A-Za-z0-9\-]/', '', $t['name']);
+            $name = preg_replace('/[^A-Za-z0-9\-]/', ' ', $t['name']);
             echo 'Updating '.$name.'<br>';
             $data = new Application_Model_BenchmarkData(
                 array(
@@ -278,8 +278,6 @@ class IndexController extends Zend_Controller_Action
 
     public function detailsAction()
     {
-        //$this->_helper->layout->setLayout('print');
-
         $data = new Application_Model_BenchmarkDataMapper();
 
         $result = $data->fetchData($this->_getParam('cid'));
