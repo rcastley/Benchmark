@@ -1,46 +1,55 @@
+
 <div class="jumbotron jcolor">
-    <div class="container">
-        <h2>Metrics for <?php echo $this->testDetails['name'] ?></h2>
-        <table class="table">
-            <tr>
-                <th>DNS</th>
-                <th>Wait</th>
-                <th>Load</th>
-                <th>Bytes</th>
-                <th>Doc. Complete</th>
-                <th>WebPage Response</th>
-                <th>Items</th>
-            </tr>
-            <tr>
-                <td><?php echo $this->testDetails['dns'] ?> s</td>
-                <td><?php echo $this->testDetails['wait'] ?> s</td>
-                <td><?php echo $this->testDetails['load'] ?> s</td>
-                <td><?php echo $this->testDetails['bytes'] ?> Mb</td>
-                <td><?php echo $this->testDetails['doc_complete'] ?> s</td>
-                <td><?php echo $this->testDetails['webpage_response'] ?> s</td>
-                <td><?php echo $this->testDetails['items'] ?></td>
-            </tr>
-        </table>
-        <p>Select benchmark below to create a performance comparison report</p>
-    </div>
+  <div class="container">
+    <h2>Metrics for <?php echo $this->testDetails['name'] ?></h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>DNS</th>
+          <th>Wait</th>
+          <th>Load</th>
+          <th>Bytes</th>
+          <th>Doc. Complete</th>
+          <th>WebPage Response</th>
+          <th>Items</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><?php echo $this->testDetails['dns'] ?>s</td>
+          <td><?php echo $this->testDetails['wait'] ?>s</td>
+          <td><?php echo $this->testDetails['load'] ?>s</td>
+          <td><?php echo $this->testDetails['bytes'] ?>Mb</td>
+          <td><?php echo $this->testDetails['doc_complete'] ?>s</td>
+          <td><?php echo $this->testDetails['webpage_response'] ?>s</td>
+          <td><?php echo $this->testDetails['items'] ?></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Select a Benchmark below to create a Benchmark Performance Report</p>
+  </div>
 </div>
 
 <div class="container">
-    <div class="row">
-    <?php foreach ($this->current as $c): ?>
-        <div class="col-sm-3 col-xs-4">
-            <a href="/index/view/cid/<?php echo $c->cid ?>" target="_blank">
-                <div class="thumbnail">
-                    <div class="text-center">
-                    <span style="font-size: 5em;" class="glyphicon glyphicon-stats"></span>
-                </div>
-                    <div class="caption">
-                        <h4 class="text-center"><?php echo $c->name ?></h4>
-                        <p class="text-center"><small><?php echo $c->modified ?></small><p>
-                    </div>
-                </div>
-            </a>
+  <div class="row">
+
+<?php foreach ($this->current as $c): ?>
+
+    <div class="col-sm-3 col-xs-4">
+      <a href="/index/view/cid/<?php echo $c->cid ?>" target="_blank">
+        <div class="thumbnail">
+          <div class="text-center">
+            <span style="font-size: 5em;" class="glyphicon glyphicon-stats"></span>
+          </div>
+          <div class="caption">
+            <h4 class="text-center"><?php echo $c->name ?></h4>
+            <p class="text-center"><small><?php echo $c->modified ?></small><p>
+          </div>
         </div>
-    <?php endforeach; ?>
+      </a>
     </div>
+
+<?php endforeach; ?>
+
+  </div>
 </div>
