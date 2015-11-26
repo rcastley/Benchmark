@@ -30,6 +30,7 @@ class Catchpoint_Pull
 
         if ($this->override == true) {
             unset($this->session->token);
+            //echo "<script>console.log('". $this->session->token ."');</script>";
         } else {
             $this->session->token = $this->getToken();
         }
@@ -42,7 +43,7 @@ class Catchpoint_Pull
         }
 
         $ch = curl_init();
-
+        //echo "<script>console.log('".$this->_url.$request."');</script>";
         curl_setopt($ch, CURLOPT_URL, $this->_url.$request);
         curl_setopt($ch, CURLOPT_HTTPHEADER,
             array(
@@ -82,11 +83,8 @@ class Catchpoint_Pull
             $this->secret = base64_encode($apiKeys['master']['secret']);
         }
 
-
-        echo("<script>console.log('getToken called');</script>");
-        echo("<script>console.log('Key: ".$this->key."');</script>");
-        echo("<script>console.log('Secret: ".$this->secret."');</script>");
-
+        //echo("<script>console.log('Key: ".base64_decode($this->key)."');</script>");
+        //echo("<script>console.log('Secret: ".base64_decode($this->secret)."');</script>");
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->_tokenUrl.'token');
