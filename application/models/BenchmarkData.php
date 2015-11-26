@@ -87,7 +87,7 @@ class Application_Model_BenchmarkData
 
     public function setName($name)
     {
-        $this->_name = $name;
+        $this->_name =  (string) $name;
 
         return $this;
     }
