@@ -27,14 +27,14 @@ class Application_Form_Login extends Zend_Form
                         'placeholder' => 'Username',
                         'class' => 'form-control',
                 ));
-                
+
         $login = $this->addElement('button', 'login',
                 array(
                         'required' => false,
                         'ignore' => true,
                         'label' => 'Login',
                         'type' => 'submit',
-                        'class' => 'btn btn-lg btn-primary btn-block',
+                        'class' => 'btn btn-md btn-primary btn-block',
                 ));
 
         $this->username->removeDecorator('HtmlTag');
