@@ -56,8 +56,7 @@ class Application_Model_BenchmarkDataMapper
                 'webpage_response' => $benchmark->getWebpageResponse(),
                 'items' => $benchmark->getItems(),
         );
-
-        $this->getDbTable()->update($data, array('cid = ?' => $benchmark->getCid(), 'name' => $benchmark->getName()));
+        $this->getDbTable()->update($data, array('cid = ?' => $benchmark->getCid(), 'name = ?' => $benchmark->getName()));
     }
 
     public function find($id, Application_Model_BenchmarkData $benchmark)
@@ -110,5 +109,10 @@ class Application_Model_BenchmarkDataMapper
         ->where('cid = ?', $cid);
         $resultSet = $this->getDbTable()->fetchAll($query);
         return $resultSet;
+    }
+
+    public function delete ($cid)
+    {
+        $this->getDbTable()->delete('cid = ' . (int) $cid);
     }
 }
