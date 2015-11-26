@@ -34,12 +34,33 @@ class Application_Model_BenchmarkChartsMapper
                 'modified' => $chart->getModified()
         );
 
+        /*
         if (null === ($id = $chart->getId())) {
             unset($data['id']);
             $this->getDbTable()->insert($data);
         } else {
             $this->getDbTable()->update($data, array('id = ?' => $id));
         }
+        */
+        $check = $this->fetchRow($chart->getCid());
+
+        if (null === ($cid = $check)) {
+            $this->getDbTable()->insert($data);
+        } else {
+            $this->getDbTable()->update($data, array("cid = ?" => $check->cid));
+        }
+    }
+
+    public function fetchRow ($cid)
+    {
+        $query = $this->getDbTable()
+            ->select()
+            ->where('cid = ?', $cid);
+        $resultSet = $this->getDbTable()->fetchRow($query);
+
+        //echo $query->__toString() . PHP_EOL;
+
+        return $resultSet;
     }
 
     public function find($id, Application_Model_BenchmarkCharts $chart)
@@ -79,5 +100,10 @@ class Application_Model_BenchmarkChartsMapper
         $resultSet = $this->getDbTable()->fetchRow($query);
 
         return $resultSet;
+    }
+
+    public function delete ($cid)
+    {
+        $this->getDbTable()->delete('cid = ' . (int) $cid);
     }
 }
