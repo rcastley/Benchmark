@@ -44,9 +44,11 @@ class IndexController extends Zend_Controller_Action
     public function indexAction()
     {
         $t = new Catchpoint_Pull();
+
         $t->override = true;
-        $t->key = $this->view->key;//$result['key'];
-        $t->secret = $this->view->secret;//$result['secret'];
+        $t->key = $this->view->key;
+        $t->secret = $this->view->secret;
+
         $testArray = $t->fetchData('tests?typeId=0&monitorId=18&status=0');
 
         $this->view->tests = $testArray;
@@ -66,7 +68,7 @@ class IndexController extends Zend_Controller_Action
             foreach ($m->summary->items as $a) {
                 $tests[] = array(
                 'cid' => $this->_getParam('cid'),
-                'name' => $a->breakdown_1->name,
+                'name' => $a->breakdown_1->id . ' - ' . $a->breakdown_1->name,
                 'dns' => round($a->synthetic_metrics[0] / 1000, 3),
                 'wait' => round($a->synthetic_metrics[1] / 1000, 3),
                 'load' => round($a->synthetic_metrics[2] / 1000, 3),
@@ -78,7 +80,9 @@ class IndexController extends Zend_Controller_Action
         }
 
         foreach ($tests as $t) {
-            $name = preg_replace('/[^A-Za-z0-9\-]/', ' ', $t['name']);
+            //$name = preg_replace('/[^A-Za-z0-9\-]/', ' ', $t['name']);
+            //$name = preg_replace('/[^A-Za-z0-9\-\[\]]/', ' ', $t['name']);
+            $name = preg_replace('/[^A-Za-z0-9 -]+/', '', $t['name']);
 
             $data = new Application_Model_BenchmarkData(
                   array(
@@ -109,7 +113,7 @@ class IndexController extends Zend_Controller_Action
 
         $mapper->save($chart);
 
-        $this->_helper->redirector('index', 'index');
+        $this->_helper->redirector('details', 'index', '', array('cid' => $this->_getParam('cid')));
     }
 
     public function testAction()
@@ -208,72 +212,48 @@ class IndexController extends Zend_Controller_Action
 
     public function updateAction()
     {
-        echo '<pre>';
-        //$this->session = new Zend_Session_Namespace('Catchpoint');
-        //unset($this->session->token);
-        $t = new Catchpoint_Pull();
-
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
 
-        $charts = new Application_Model_BenchmarkChartsMapper();
-        $result = $charts->fetchAll();
+        $t = new Catchpoint_Pull();
 
-        foreach ($result as $r) {
-            $myArray[] = $t->fetchData('performance/favoriteCharts/'.$r->cid.'/data');
+        $myArray = $t->fetchData('performance/favoriteCharts/' . $this->_getParam('cid') . '/data');
 
-            $chart = new Application_Model_BenchmarkCharts(
-                  array(
-                      'id' => $r->id,
-                      'cid' => $r->cid,
-                      'name' => $r->name,
-                      'modified' => date('Y-m-d H:i:s'),
-                  ));
+        $chart = new Application_Model_BenchmarkCharts(
+          array(
+            'cid' => $this->_getParam('cid'),
+            'name' => $this->_getParam('name'),
+            'modified' => date('Y-m-d H:i:s'),
+          )
+        );
 
-            $mapper = new Application_Model_BenchmarkChartsMapper();
+        $cMapper = new Application_Model_BenchmarkChartsMapper();
 
-            $mapper->save($chart);
+        $cMapper->save($chart);
 
-            sleep(2);
-        }
+        $dMapper = new Application_Model_BenchmarkDataMapper();
 
-        $tests = array();
-
-        foreach ($myArray as $m) {
-            foreach ($m->summary->items as $a) {
-                $tests[] = array(
-              'cid' => $chart->cid,
-              'name' => $a->breakdown_1->name,
+        foreach ($myArray->summary->items as $a) {
+            $name = preg_replace('/[^A-Za-z0-9 -]+/', '', $a->breakdown_1->id . ' - ' . $a->breakdown_1->name);
+            $data = new Application_Model_BenchmarkData(
+              array(
+              'cid' => $this->_getParam('cid'),
+              'name' => $name,
               'dns' => round($a->synthetic_metrics[0] / 1000, 3),
               'wait' => round($a->synthetic_metrics[1] / 1000, 3),
               'load' => round($a->synthetic_metrics[2] / 1000, 3),
               'bytes' => round($a->synthetic_metrics[3] / 1000000, 2),
-              'doc_complete' => round($a->synthetic_metrics[4] / 1000, 2),
-              'webpage_response' => round($a->synthetic_metrics[5] / 1000, 2),
-              'items' => round($a->synthetic_metrics[6], 0), );
-            }
+              'docComplete' => round($a->synthetic_metrics[4] / 1000, 2),
+              'webpageResponse' => round($a->synthetic_metrics[5] / 1000, 2),
+              'items' => round($a->synthetic_metrics[6], 0),
+            ));
+
+            $dMapper->update($data);
+          
+            $data = null;
         }
 
-        foreach ($tests as $t) {
-            $name = preg_replace('/[^A-Za-z0-9\-]/', ' ', $t['name']);
-            echo 'Updating '.$name.'<br>';
-            $data = new Application_Model_BenchmarkData(
-                array(
-                    'cid' => $t['id'],
-                    'name' => $name,
-                    'dns' => $t['dns'],
-                    'wait' => $t['wait'],
-                    'load' => $t['load'],
-                    'bytes' => $t['bytes'],
-                    'docComplete' => $t['doc_complete'],
-                    'webpageResponse' => $t['webpage_response'],
-                    'items' => $t['items'],
-                ));
-
-            $mapper = new Application_Model_BenchmarkDataMapper();
-
-            $mapper->update($data);
-        }
+        $this->_helper->redirector('details', 'index', '', array('cid' => $this->_getParam('cid')));
     }
 
     public function detailsAction()
@@ -290,5 +270,19 @@ class IndexController extends Zend_Controller_Action
         $this->view->cid = $getChartName->cid;
         $this->view->modified = $getChartName->modified;
         $this->view->data = $result;
+    }
+
+    public function deleteAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+
+        $chart = new Application_Model_BenchmarkChartsMapper();
+        $data = new Application_Model_BenchmarkDataMapper();
+
+        $chart->delete($this->_getParam('cid'));
+        $data->delete($this->_getParam('cid'));
+
+        $this->_helper->redirector('index', 'index');
     }
 }
