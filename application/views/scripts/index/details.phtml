@@ -3,8 +3,10 @@
   <div class="container">
     <h2>
       <span class="fa fa-table"></span> Benchmark Summary for <?php echo $this->chartName ?> (<?php echo $this->cid ?>)
-      <a class="btn btn-success btn-md" href="<?php echo $this->serverUrl() ?>/index/update/cid/<?php echo $this->cid ?>/name/<?php echo $this->chartName ?>" role="button">Update</a>
-      <a class="btn btn-danger btn-md" href="<?php echo $this->serverUrl() ?>/index/delete/cid/<?php echo $this->cid ?>" role="button">Delete</a>
+      <a class="btn btn-success btn-md" href="<?php echo $this->serverUrl() ?>/index/update/cid/<?php echo $this->cid ?>/name/<?php echo $this->chartName ?>" role="button"><span class="fa fa-refresh"></span></a>
+      <?php if ($this->user == "benchmark") : ?>
+      <a class="btn btn-danger btn-md" href="<?php echo $this->serverUrl() ?>/index/delete/cid/<?php echo $this->cid ?>" role="button"><span class="fa fa-trash"></span></a>
+      <?php endif; ?>
     </h2>
     <p>Last updated: <?php echo $this->modified ?></p>
   </div>
