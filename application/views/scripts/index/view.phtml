@@ -234,32 +234,32 @@
       </td>
     <td class="col-md-4">
       <p>Webpage Response</p>
-      <h1><?php echo $this->uwr ?> s</h1>
+      <h1><?php echo $this->uwr ?>s</h1>
     </td>
     <td class="col-md-4"></td>
   </tr>
   <tr>
     <td class="col-md-4">
       <p>DNS</p>
-      <h3><?php echo $this->udns ?> s</h3>
+      <h3><?php echo $this->udns ?>s</h3>
     </td>
     <td class="col-md-4">
       <p>Load</p>
-      <h3><?php echo $this->uload ?> s</h3>
+      <h3><?php echo $this->uload ?>s</h3>
     </td>
     <td class="col-md-4">
       <p>Wait</p>
-      <h3><?php echo $this->uwait ?> s</h3>
+      <h3><?php echo $this->uwait ?>s</h3>
     </td>
   </tr>
   <tr>
     <td class="col-md-4">
       <p>Document Complete</p>
-      <h3><?php echo $this->udc ?> s</h3>
+      <h3><?php echo $this->udc ?>s</h3>
     </td>
     <td class="col-md-4">
       <p>Page Weight</p>
-      <h3><?php echo $this->ubytes ?> Mb</h3>
+      <h3><?php echo $this->ubytes ?>Mb</h3>
     </td>
     <td class="col-md-4">
       <p># Items</p>
@@ -329,7 +329,7 @@ $(function () {
         },
         labels: {
           enabled: true,
-          format: '{value} s'
+          format: '{value}s'
         },
         visible: true,
         type: "linear",
@@ -355,7 +355,7 @@ $(function () {
               },
               tooltip: {
                   headerFormat: '<b>{series.name}</b><br>',
-                  pointFormat: '{point.y} s'
+                  pointFormat: '{point.y}s'
               }
           }
       }
@@ -458,7 +458,7 @@ $(function () {
         xAxis: [{
           visible: true,
           labels : {
-            format: '{value} Mb',
+            format: '{value}Mb',
             enabled: true
           },
           title: {
@@ -474,7 +474,7 @@ $(function () {
           scatter: {
             tooltip: {
                 headerFormat: '<b>{series.name}</b><br>',
-                pointFormat: '{point.y} s - {point.x} Mb'
+                pointFormat: '{point.x}Mb - {point.y}s'
             }
           }
         },
@@ -516,7 +516,7 @@ $(function () {
           scatter: {
             tooltip: {
                 headerFormat: '<b>{series.name}</b><br>',
-                pointFormat: '{point.y} s - # {point.x}'
+                pointFormat: '{point.x} - {point.y}s'
             }
           }
         },
@@ -563,7 +563,7 @@ $(function () {
           scatter: {
             tooltip: {
                 headerFormat: '<b>{series.name}</b><br>',
-                pointFormat: '{point.y} Mb - # {point.x}'
+                pointFormat: '{point.x} - {point.y}Mb'
             }
           }
         },
