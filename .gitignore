@@ -7,3 +7,4 @@
 *.db
 
 data/db/benchmark.db
+*.log
