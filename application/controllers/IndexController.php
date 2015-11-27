@@ -64,7 +64,7 @@ class IndexController extends Zend_Controller_Action
         $myArray = $t->fetchData('performance/favoriteCharts/'.$this->_getParam('cid').'/data');
 
         $mapper = new Application_Model_BenchmarkDataMapper();
-        
+
         foreach ($myArray->summary->items as $a) {
             $name = preg_replace('/[^A-Za-z0-9 -]+/', '', $a->breakdown_1->id . ' - ' . $a->breakdown_1->name);
             $data = new Application_Model_BenchmarkData(
@@ -185,6 +185,14 @@ class IndexController extends Zend_Controller_Action
         $this->view->creator = $this->session->userDetails[0];
         $this->view->jobTitle = $this->session->userDetails[1];
         $this->view->contactNumber = $this->session->userDetails[2];
+
+        $lg_logo = './images/cp-horizontal.png';
+        $lg_logoData = base64_encode(file_get_contents($lg_logo));
+        $this->view->lg_logo = 'data: ' . mime_content_type($lg_logo) . ';base64, ' . $lg_logoData;
+
+        $sm_logo = './images/cp_blue.png';
+        $sm_logoData = base64_encode(file_get_contents($sm_logo));
+        $this->view->sm_logo = 'data: ' . mime_content_type($sm_logo) . ';base64, ' . $sm_logoData;
     }
 
     public function addAction()
