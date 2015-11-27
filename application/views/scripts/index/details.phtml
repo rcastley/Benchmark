@@ -22,7 +22,7 @@
         <th>Load</th>
         <th>Doc.<br>Complete</th>
         <th>Webpage<br>Response</th>
-        <th>Bytes (Mb)</th>
+        <th>Bytes</th>
         <th>Items</th>
       </tr>
     </thead>
@@ -30,12 +30,12 @@
     <?php foreach ($this->data as $d) : ?>
       <tr>
         <td><?php echo $d->name ?></td>
-        <td><?php echo $d->dns ?> s</td>
-        <td><?php echo $d->wait ?> s</td>
-        <td><?php echo $d->load ?> s</td>
-        <td><?php echo $d->doc_complete ?> s</td>
-        <td><?php echo $d->webpage_response ?> s</td>
-        <td><?php echo $d->bytes ?> Mb</td>
+        <td><?php echo $d->dns ?>s</td>
+        <td><?php echo $d->wait ?>s</td>
+        <td><?php echo $d->load ?>s</td>
+        <td><?php echo $d->doc_complete ?>s</td>
+        <td><?php echo $d->webpage_response ?>s</td>
+        <td><?php echo $d->bytes ?>Mb</td>
         <td><?php echo $d->items ?></td>
       </tr>
     <?php endforeach; ?>
