@@ -56,48 +56,29 @@ class IndexController extends Zend_Controller_Action
 
     public function createAction()
     {
-        $t = new Catchpoint_Pull();
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
 
-        $myArray[] = $t->fetchData('performance/favoriteCharts/'.$this->_getParam('cid').'/data');
+        $t = new Catchpoint_Pull();
 
-        $tests = array();
+        $myArray = $t->fetchData('performance/favoriteCharts/'.$this->_getParam('cid').'/data');
 
-        foreach ($myArray as $m) {
-            foreach ($m->summary->items as $a) {
-                $tests[] = array(
-                'cid' => $this->_getParam('cid'),
-                'name' => $a->breakdown_1->id . ' - ' . $a->breakdown_1->name,
-                'dns' => round($a->synthetic_metrics[0] / 1000, 3),
-                'wait' => round($a->synthetic_metrics[1] / 1000, 3),
-                'load' => round($a->synthetic_metrics[2] / 1000, 3),
-                'bytes' => round($a->synthetic_metrics[3] / 1000000, 2),
-                'doc_complete' => round($a->synthetic_metrics[4] / 1000, 2),
-                'webpage_response' => round($a->synthetic_metrics[5] / 1000, 2),
-                'items' => round($a->synthetic_metrics[6], 0), );
-            }
-        }
-
-        foreach ($tests as $t) {
-            //$name = preg_replace('/[^A-Za-z0-9\-]/', ' ', $t['name']);
-            //$name = preg_replace('/[^A-Za-z0-9\-\[\]]/', ' ', $t['name']);
-            $name = preg_replace('/[^A-Za-z0-9 -]+/', '', $t['name']);
-
+        $mapper = new Application_Model_BenchmarkDataMapper();
+        
+        foreach ($myArray->summary->items as $a) {
+            $name = preg_replace('/[^A-Za-z0-9 -]+/', '', $a->breakdown_1->id . ' - ' . $a->breakdown_1->name);
             $data = new Application_Model_BenchmarkData(
-                  array(
-                          'cid' => $t['cid'],
-                          'name' => $name,
-                          'dns' => $t['dns'],
-                          'wait' => $t['wait'],
-                          'load' => $t['load'],
-                          'bytes' => $t['bytes'],
-                          'docComplete' => $t['doc_complete'],
-                          'webpageResponse' => $t['webpage_response'],
-                          'items' => $t['items'],
-                  ));
-
-            $mapper = new Application_Model_BenchmarkDataMapper();
+              array(
+              'cid' => $this->_getParam('cid'),
+              'name' => $name,
+              'dns' => round($a->synthetic_metrics[0] / 1000, 3),
+              'wait' => round($a->synthetic_metrics[1] / 1000, 3),
+              'load' => round($a->synthetic_metrics[2] / 1000, 3),
+              'bytes' => round($a->synthetic_metrics[3] / 1000000, 2),
+              'docComplete' => round($a->synthetic_metrics[4] / 1000, 2),
+              'webpageResponse' => round($a->synthetic_metrics[5] / 1000, 2),
+              'items' => round($a->synthetic_metrics[6], 0),
+            ));
 
             $mapper->save($data);
         }
@@ -249,7 +230,7 @@ class IndexController extends Zend_Controller_Action
             ));
 
             $dMapper->update($data);
-          
+
             $data = null;
         }
 
