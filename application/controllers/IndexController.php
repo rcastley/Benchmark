@@ -173,7 +173,9 @@ class IndexController extends Zend_Controller_Action
 
         $this->session = new Zend_Session_Namespace('Catchpoint');
 
-        $this->view->uname = $this->session->userChart['name'];
+        $reportName = preg_replace('#^https?://#', '', $this->session->userChart['name']);
+        $reportName = str_replace('/','',$reportName);
+        $this->view->uname = $reportName;
         $this->view->udns = $this->session->userChart['dns'];
         $this->view->uwait = $this->session->userChart['wait'];
         $this->view->uload = $this->session->userChart['load'];
